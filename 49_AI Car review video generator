@@ -1,0 +1,1804 @@
+{
+  "name": "49_AI Car review video generator",
+  "nodes": [
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "1NNRQbxtyQvL3UdZuyLPZ0kwQyhWo3XYkOSUrTz1ewm4",
+          "mode": "list",
+          "cachedResultName": "Car Dealership Promo Video",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1NNRQbxtyQvL3UdZuyLPZ0kwQyhWo3XYkOSUrTz1ewm4/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1NNRQbxtyQvL3UdZuyLPZ0kwQyhWo3XYkOSUrTz1ewm4/edit#gid=0"
+        },
+        "filtersUI": {
+          "values": [
+            {
+              "lookupColumn": "Status",
+              "lookupValue": "Pending"
+            }
+          ]
+        },
+        "options": {
+          "returnFirstMatch": true
+        }
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        304,
+        144
+      ],
+      "id": "bd381f63-8b16-4cc9-a4a9-7aa92ca1418d",
+      "name": "Read Database",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "IB4bnQ037MQjLvzB",
+          "name": "Ecommojo-Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "image",
+        "operation": "analyze",
+        "modelId": {
+          "__rl": true,
+          "value": "models/gemini-2.5-pro",
+          "mode": "list",
+          "cachedResultName": "models/gemini-2.5-pro"
+        },
+        "text": "=## Role and Objective\nYou are an expert visual analyst specializing in creating comprehensive, structured descriptions of the PRIMARY SUBJECT in images. Your task is to examine uploaded images and produce exhaustively detailed YAML descriptions that capture every observable characteristic of the main subject (person, product, or location), IGNORING background or environmental elements *unless* the environment itself is the subject.\n\n## Core Mission\nTransform visual information about the PRIMARY SUBJECT ONLY into a structured YAML format that provides enough detail for AI systems to recreate the subject with high fidelity in any new environment. Focus exclusively on the subject's intrinsic characteristics.\n\n## Analysis Methodology\n### Step 1: Subject Identification\n* Determine if the primary subject is a **Person**, a **Product**, or a **Location** (Building/Environment).\n* If a Person or Product, isolate it from its surroundings.\n* If a **Location**, the immediate surroundings (building, parking lot, signage) *are* the subject. Ignore distant, irrelevant background elements (e.g., mountains far away, unrelated city street).\n\n### Step 2: Systematic Subject Scanning\nUse this focused approach:\n1.  **Overall subject form**: Shape, scale, and layout of the main subject.\n2.  **Surface characteristics**: Materials, textures, and colors of the subject itself.\n3.  **Structural details**: Components, features, and construction.\n4.  **Fine details**: Intrinsic textures, patterns, and markings.\n5.  **Subject-specific attributes**: Unique characteristics that define this particular subject.\n\n### Step 3: YAML Structure Generation\nBased on the identified subject type, use the appropriate template structure with exhaustive detail in each field.\n\n## YAML Output Templates\n*(Use the one that best fits the image's primary subject)*\n\n### For People\n```yaml\nsubject_metadata:\n  subject_type: \"Person\"\n  analysis_focus: \"Subject-only, background ignored\"\n  viewing_angle: \"How we're seeing the person (front, profile, 3/4 view)\"\n\nperson:\n  demographic_appearance:\n    apparent_age_range: \"Specific age estimation with reasoning\"\n    gender_presentation: \"How they present themselves visually\"\n  # ... (rest of the detailed 'person' template) ...\n  facial_analysis:\n    overall_facial_structure:\n      face_shape: \"Oval, round, square, heart, diamond, oblong\"\n    # ... etc ...\n  hair_analysis:\n    # ... etc ...\n  body_and_posture:\n    # ... etc ...\n  clothing_analysis:\n    # ... etc ...\n  expression_and_demeanor:\n    # ... etc ...\nFor Products\nYAML\n\nsubject_metadata:\n  subject_type: \"Product\"\n  analysis_focus: \"Subject-only, background ignored\"\n  lighting_note: \"How light affects subject appearance only\"\n\nproduct:\n  identification:\n    category: \"Specific product type (e.g., Car, Phone)\"\n    subcategory: \"More specific classification (e.g., Mid-size Sedan)\"\n  # ... (rest of the detailed 'product' template) ...\n  physical_structure:\n    overall_shape: \"Geometric description with proportions\"\n    # ... etc ...\n  materials_and_surfaces:\n    # ... etc ...\n  color_analysis:\n    # ... etc ...\n  distinctive_details:\n    # ... etc ...\nFor Locations (Buildings/Environments)\nYAML\n\nsubject_metadata:\n  subject_type: \"Location\"\n  analysis_focus: \"Primary building and immediate property\"\n  viewing_angle: \"Perspective of the viewer (e.g., ground-level, eye-level, from parking lot)\"\n  time_of_day: \"e.g., Midday, Golden Hour, Night\"\n  weather_conditions: \"e.g., Clear blue sky, Overcast, Rainy\"\n\nlocation:\n  identification:\n    location_type: \"e.g., Car Dealership, Office Building, Retail Store\"\n    fictional_name: \"Name of the business, if visible on signage\"\n    overall_style: \"e.g., Modern, Contemporary, Traditional, Brutalist\"\n\n  architectural_features:\n    main_structure:\n      shape: \"Overall geometric form (e.g., Rectangular, L-shaped)\"\n      size_scale: \"e.g., Large, single-story, expansive\"\n      materials: \"Primary construction materials (e.g., Glass, steel, concrete, brick)\"\n      color_palette: \"Dominant and accent colors of the building\"\n    \n    facade_details:\n      windows: \"Type, size, and placement (e.g., Floor-to-ceiling glass, small rectangular)\"\n      entrance: \"Description of main doors (e.g., Double glass sliding doors, grand entryway)\"\n      roof_style: \"e.g., Flat roof, sloped, architectural\"\n    \n    interior_glimpse:\n      visibility: \"Is the interior visible from outside?\"\n      visible_elements: \"e.g., Brightly lit showroom, cars visible inside, reception desk\"\n\n  branding_and_signage:\n    primary_logo:\n      description: \"Visual description of the main logo\"\n      placement: \"e.g., Mounted on facade, on a pylon sign\"\n      text: \"Any text visible on the logo\"\n    \n    other_signage:\n      directional_signs: \"e.g., 'Enter', 'Service', 'Parking'\"\n      promotional_banners: \"e.g., 'Summer Sale Event'\"\n      brand_logos: \"e.g., Honda, Ford, Toyota logos visible\"\n\n  immediate_environment:\n    ground_surface:\n      type: \"e.g., Asphalt parking lot, concrete walkways\"\n      condition: \"e.g., Clean, new, cracked, marked with lines\"\n    \n    landscaping:\n      elements: \"e.g., Manicured bushes, grass strips, trees, decorative rocks\"\n      condition: \"e.g., Well-maintained, sparse\"\n    \n    fixtures:\n      lighting: \"e.g., Tall parking lot lamps, wall-mounted lights\"\n      other: \"e.g., Flagpoles, benches, barriers\"\n    \n    vehicles_present:\n      description: \"Are cars part of the scene? (e.g., Cars parked in rows, feature vehicle at entrance)\"\n      state: \"e.g., New, clean, for sale\"\n\n  lighting_and_atmosphere:\n    light_source: \"e.g., Bright, direct overhead sunlight\"\n    shadows: \"Description of shadows (e.g., Hard, sharp shadows, indicating midday)\"\n    overall_feel: \"e.g., Bright, professional, clean, welcoming, empty, busy\"\nAnalysis Instructions\nSubject-Focus Protocol\nIdentify Subject Type: First, determine if the image is primarily of a Person, a Product, or a Location.\n\nSelect Template: Choose the corresponding YAML template.\n\nExecute Analysis:\n\nFor Person/Product: Isolate the subject. Ignore all background elements.\n\nFor Location: Treat the building and its immediate property (parking lot, signage) as the subject. Ignore distant, irrelevant background elements (e.g., faraway hills, other buildings).\n\nBe Exhaustive: Fill every applicable field with detailed, factual observations.\n\nOutput: Provide only the completed YAML structure.",
+        "imageUrls": "={{ $json.Scene_1_Angle_URL }}",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.googleGemini",
+      "typeVersion": 1,
+      "position": [
+        544,
+        -256
+      ],
+      "id": "1a9ae5d5-fd9f-4ef3-9f03-1aa8e477f566",
+      "name": "Analyze an scene 1",
+      "retryOnFail": true,
+      "credentials": {
+        "googlePalmApi": {
+          "id": "JZ464KgCUqqY9UZt",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "image",
+        "operation": "analyze",
+        "modelId": {
+          "__rl": true,
+          "value": "models/gemini-2.5-pro",
+          "mode": "list",
+          "cachedResultName": "models/gemini-2.5-pro"
+        },
+        "text": "=## Role and Objective\nYou are an expert visual analyst specializing in creating comprehensive, structured descriptions of the PRIMARY SUBJECT in images. Your task is to examine uploaded images and produce exhaustively detailed YAML descriptions that capture every observable characteristic of the main subject (person, product, or location), IGNORING background or environmental elements *unless* the environment itself is the subject.\n\n## Core Mission\nTransform visual information about the PRIMARY SUBJECT ONLY into a structured YAML format that provides enough detail for AI systems to recreate the subject with high fidelity in any new environment. Focus exclusively on the subject's intrinsic characteristics.\n\n## Analysis Methodology\n### Step 1: Subject Identification\n* Determine if the primary subject is a **Person**, a **Product**, or a **Location** (Building/Environment).\n* If a Person or Product, isolate it from its surroundings.\n* If a **Location**, the immediate surroundings (building, parking lot, signage) *are* the subject. Ignore distant, irrelevant background elements (e.g., mountains far away, unrelated city street).\n\n### Step 2: Systematic Subject Scanning\nUse this focused approach:\n1.  **Overall subject form**: Shape, scale, and layout of the main subject.\n2.  **Surface characteristics**: Materials, textures, and colors of the subject itself.\n3.  **Structural details**: Components, features, and construction.\n4.  **Fine details**: Intrinsic textures, patterns, and markings.\n5.  **Subject-specific attributes**: Unique characteristics that define this particular subject.\n\n### Step 3: YAML Structure Generation\nBased on the identified subject type, use the appropriate template structure with exhaustive detail in each field.\n\n## YAML Output Templates\n*(Use the one that best fits the image's primary subject)*\n\n### For People\n```yaml\nsubject_metadata:\n  subject_type: \"Person\"\n  analysis_focus: \"Subject-only, background ignored\"\n  viewing_angle: \"How we're seeing the person (front, profile, 3/4 view)\"\n\nperson:\n  demographic_appearance:\n    apparent_age_range: \"Specific age estimation with reasoning\"\n    gender_presentation: \"How they present themselves visually\"\n  # ... (rest of the detailed 'person' template) ...\n  facial_analysis:\n    overall_facial_structure:\n      face_shape: \"Oval, round, square, heart, diamond, oblong\"\n    # ... etc ...\n  hair_analysis:\n    # ... etc ...\n  body_and_posture:\n    # ... etc ...\n  clothing_analysis:\n    # ... etc ...\n  expression_and_demeanor:\n    # ... etc ...\nFor Products\nYAML\n\nsubject_metadata:\n  subject_type: \"Product\"\n  analysis_focus: \"Subject-only, background ignored\"\n  lighting_note: \"How light affects subject appearance only\"\n\nproduct:\n  identification:\n    category: \"Specific product type (e.g., Car, Phone)\"\n    subcategory: \"More specific classification (e.g., Mid-size Sedan)\"\n  # ... (rest of the detailed 'product' template) ...\n  physical_structure:\n    overall_shape: \"Geometric description with proportions\"\n    # ... etc ...\n  materials_and_surfaces:\n    # ... etc ...\n  color_analysis:\n    # ... etc ...\n  distinctive_details:\n    # ... etc ...\nFor Locations (Buildings/Environments)\nYAML\n\nsubject_metadata:\n  subject_type: \"Location\"\n  analysis_focus: \"Primary building and immediate property\"\n  viewing_angle: \"Perspective of the viewer (e.g., ground-level, eye-level, from parking lot)\"\n  time_of_day: \"e.g., Midday, Golden Hour, Night\"\n  weather_conditions: \"e.g., Clear blue sky, Overcast, Rainy\"\n\nlocation:\n  identification:\n    location_type: \"e.g., Car Dealership, Office Building, Retail Store\"\n    fictional_name: \"Name of the business, if visible on signage\"\n    overall_style: \"e.g., Modern, Contemporary, Traditional, Brutalist\"\n\n  architectural_features:\n    main_structure:\n      shape: \"Overall geometric form (e.g., Rectangular, L-shaped)\"\n      size_scale: \"e.g., Large, single-story, expansive\"\n      materials: \"Primary construction materials (e.g., Glass, steel, concrete, brick)\"\n      color_palette: \"Dominant and accent colors of the building\"\n    \n    facade_details:\n      windows: \"Type, size, and placement (e.g., Floor-to-ceiling glass, small rectangular)\"\n      entrance: \"Description of main doors (e.g., Double glass sliding doors, grand entryway)\"\n      roof_style: \"e.g., Flat roof, sloped, architectural\"\n    \n    interior_glimpse:\n      visibility: \"Is the interior visible from outside?\"\n      visible_elements: \"e.g., Brightly lit showroom, cars visible inside, reception desk\"\n\n  branding_and_signage:\n    primary_logo:\n      description: \"Visual description of the main logo\"\n      placement: \"e.g., Mounted on facade, on a pylon sign\"\n      text: \"Any text visible on the logo\"\n    \n    other_signage:\n      directional_signs: \"e.g., 'Enter', 'Service', 'Parking'\"\n      promotional_banners: \"e.g., 'Summer Sale Event'\"\n      brand_logos: \"e.g., Honda, Ford, Toyota logos visible\"\n\n  immediate_environment:\n    ground_surface:\n      type: \"e.g., Asphalt parking lot, concrete walkways\"\n      condition: \"e.g., Clean, new, cracked, marked with lines\"\n    \n    landscaping:\n      elements: \"e.g., Manicured bushes, grass strips, trees, decorative rocks\"\n      condition: \"e.g., Well-maintained, sparse\"\n    \n    fixtures:\n      lighting: \"e.g., Tall parking lot lamps, wall-mounted lights\"\n      other: \"e.g., Flagpoles, benches, barriers\"\n    \n    vehicles_present:\n      description: \"Are cars part of the scene? (e.g., Cars parked in rows, feature vehicle at entrance)\"\n      state: \"e.g., New, clean, for sale\"\n\n  lighting_and_atmosphere:\n    light_source: \"e.g., Bright, direct overhead sunlight\"\n    shadows: \"Description of shadows (e.g., Hard, sharp shadows, indicating midday)\"\n    overall_feel: \"e.g., Bright, professional, clean, welcoming, empty, busy\"\nAnalysis Instructions\nSubject-Focus Protocol\nIdentify Subject Type: First, determine if the image is primarily of a Person, a Product, or a Location.\n\nSelect Template: Choose the corresponding YAML template.\n\nExecute Analysis:\n\nFor Person/Product: Isolate the subject. Ignore all background elements.\n\nFor Location: Treat the building and its immediate property (parking lot, signage) as the subject. Ignore distant, irrelevant background elements (e.g., faraway hills, other buildings).\n\nBe Exhaustive: Fill every applicable field with detailed, factual observations.\n\nOutput: Provide only the completed YAML structure.",
+        "imageUrls": "={{ $json.Scene_2_Angle_URL }}",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.googleGemini",
+      "typeVersion": 1,
+      "position": [
+        544,
+        -48
+      ],
+      "id": "aed59157-23dc-4f6c-8da6-e92fec787dfc",
+      "name": "Analyze an scene 2",
+      "retryOnFail": true,
+      "credentials": {
+        "googlePalmApi": {
+          "id": "JZ464KgCUqqY9UZt",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "image",
+        "operation": "analyze",
+        "modelId": {
+          "__rl": true,
+          "value": "models/gemini-2.5-pro",
+          "mode": "list",
+          "cachedResultName": "models/gemini-2.5-pro"
+        },
+        "text": "=## Role and Objective\nYou are an expert visual analyst specializing in creating comprehensive, structured descriptions of the PRIMARY SUBJECT in images. Your task is to examine uploaded images and produce exhaustively detailed YAML descriptions that capture every observable characteristic of the main subject (person, product, or location), IGNORING background or environmental elements *unless* the environment itself is the subject.\n\n## Core Mission\nTransform visual information about the PRIMARY SUBJECT ONLY into a structured YAML format that provides enough detail for AI systems to recreate the subject with high fidelity in any new environment. Focus exclusively on the subject's intrinsic characteristics.\n\n## Analysis Methodology\n### Step 1: Subject Identification\n* Determine if the primary subject is a **Person**, a **Product**, or a **Location** (Building/Environment).\n* If a Person or Product, isolate it from its surroundings.\n* If a **Location**, the immediate surroundings (building, parking lot, signage) *are* the subject. Ignore distant, irrelevant background elements (e.g., mountains far away, unrelated city street).\n\n### Step 2: Systematic Subject Scanning\nUse this focused approach:\n1.  **Overall subject form**: Shape, scale, and layout of the main subject.\n2.  **Surface characteristics**: Materials, textures, and colors of the subject itself.\n3.  **Structural details**: Components, features, and construction.\n4.  **Fine details**: Intrinsic textures, patterns, and markings.\n5.  **Subject-specific attributes**: Unique characteristics that define this particular subject.\n\n### Step 3: YAML Structure Generation\nBased on the identified subject type, use the appropriate template structure with exhaustive detail in each field.\n\n## YAML Output Templates\n*(Use the one that best fits the image's primary subject)*\n\n### For People\n```yaml\nsubject_metadata:\n  subject_type: \"Person\"\n  analysis_focus: \"Subject-only, background ignored\"\n  viewing_angle: \"How we're seeing the person (front, profile, 3/4 view)\"\n\nperson:\n  demographic_appearance:\n    apparent_age_range: \"Specific age estimation with reasoning\"\n    gender_presentation: \"How they present themselves visually\"\n  # ... (rest of the detailed 'person' template) ...\n  facial_analysis:\n    overall_facial_structure:\n      face_shape: \"Oval, round, square, heart, diamond, oblong\"\n    # ... etc ...\n  hair_analysis:\n    # ... etc ...\n  body_and_posture:\n    # ... etc ...\n  clothing_analysis:\n    # ... etc ...\n  expression_and_demeanor:\n    # ... etc ...\nFor Products\nYAML\n\nsubject_metadata:\n  subject_type: \"Product\"\n  analysis_focus: \"Subject-only, background ignored\"\n  lighting_note: \"How light affects subject appearance only\"\n\nproduct:\n  identification:\n    category: \"Specific product type (e.g., Car, Phone)\"\n    subcategory: \"More specific classification (e.g., Mid-size Sedan)\"\n  # ... (rest of the detailed 'product' template) ...\n  physical_structure:\n    overall_shape: \"Geometric description with proportions\"\n    # ... etc ...\n  materials_and_surfaces:\n    # ... etc ...\n  color_analysis:\n    # ... etc ...\n  distinctive_details:\n    # ... etc ...\nFor Locations (Buildings/Environments)\nYAML\n\nsubject_metadata:\n  subject_type: \"Location\"\n  analysis_focus: \"Primary building and immediate property\"\n  viewing_angle: \"Perspective of the viewer (e.g., ground-level, eye-level, from parking lot)\"\n  time_of_day: \"e.g., Midday, Golden Hour, Night\"\n  weather_conditions: \"e.g., Clear blue sky, Overcast, Rainy\"\n\nlocation:\n  identification:\n    location_type: \"e.g., Car Dealership, Office Building, Retail Store\"\n    fictional_name: \"Name of the business, if visible on signage\"\n    overall_style: \"e.g., Modern, Contemporary, Traditional, Brutalist\"\n\n  architectural_features:\n    main_structure:\n      shape: \"Overall geometric form (e.g., Rectangular, L-shaped)\"\n      size_scale: \"e.g., Large, single-story, expansive\"\n      materials: \"Primary construction materials (e.g., Glass, steel, concrete, brick)\"\n      color_palette: \"Dominant and accent colors of the building\"\n    \n    facade_details:\n      windows: \"Type, size, and placement (e.g., Floor-to-ceiling glass, small rectangular)\"\n      entrance: \"Description of main doors (e.g., Double glass sliding doors, grand entryway)\"\n      roof_style: \"e.g., Flat roof, sloped, architectural\"\n    \n    interior_glimpse:\n      visibility: \"Is the interior visible from outside?\"\n      visible_elements: \"e.g., Brightly lit showroom, cars visible inside, reception desk\"\n\n  branding_and_signage:\n    primary_logo:\n      description: \"Visual description of the main logo\"\n      placement: \"e.g., Mounted on facade, on a pylon sign\"\n      text: \"Any text visible on the logo\"\n    \n    other_signage:\n      directional_signs: \"e.g., 'Enter', 'Service', 'Parking'\"\n      promotional_banners: \"e.g., 'Summer Sale Event'\"\n      brand_logos: \"e.g., Honda, Ford, Toyota logos visible\"\n\n  immediate_environment:\n    ground_surface:\n      type: \"e.g., Asphalt parking lot, concrete walkways\"\n      condition: \"e.g., Clean, new, cracked, marked with lines\"\n    \n    landscaping:\n      elements: \"e.g., Manicured bushes, grass strips, trees, decorative rocks\"\n      condition: \"e.g., Well-maintained, sparse\"\n    \n    fixtures:\n      lighting: \"e.g., Tall parking lot lamps, wall-mounted lights\"\n      other: \"e.g., Flagpoles, benches, barriers\"\n    \n    vehicles_present:\n      description: \"Are cars part of the scene? (e.g., Cars parked in rows, feature vehicle at entrance)\"\n      state: \"e.g., New, clean, for sale\"\n\n  lighting_and_atmosphere:\n    light_source: \"e.g., Bright, direct overhead sunlight\"\n    shadows: \"Description of shadows (e.g., Hard, sharp shadows, indicating midday)\"\n    overall_feel: \"e.g., Bright, professional, clean, welcoming, empty, busy\"\nAnalysis Instructions\nSubject-Focus Protocol\nIdentify Subject Type: First, determine if the image is primarily of a Person, a Product, or a Location.\n\nSelect Template: Choose the corresponding YAML template.\n\nExecute Analysis:\n\nFor Person/Product: Isolate the subject. Ignore all background elements.\n\nFor Location: Treat the building and its immediate property (parking lot, signage) as the subject. Ignore distant, irrelevant background elements (e.g., faraway hills, other buildings).\n\nBe Exhaustive: Fill every applicable field with detailed, factual observations.\n\nOutput: Provide only the completed YAML structure.",
+        "imageUrls": "={{ $json.Scene_3_Angle_URL }}",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.googleGemini",
+      "typeVersion": 1,
+      "position": [
+        544,
+        144
+      ],
+      "id": "e862cbdb-bcc5-4b52-b0e5-c031843f23d8",
+      "name": "Analyze an scene 3",
+      "retryOnFail": true,
+      "credentials": {
+        "googlePalmApi": {
+          "id": "JZ464KgCUqqY9UZt",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "image",
+        "operation": "analyze",
+        "modelId": {
+          "__rl": true,
+          "value": "models/gemini-2.5-pro",
+          "mode": "list",
+          "cachedResultName": "models/gemini-2.5-pro"
+        },
+        "text": "=## Role and Objective\nYou are an expert visual analyst specializing in creating comprehensive, structured descriptions of the PRIMARY SUBJECT in images. Your task is to examine uploaded images and produce exhaustively detailed YAML descriptions that capture every observable characteristic of the main subject (person, product, or location), IGNORING background or environmental elements *unless* the environment itself is the subject.\n\n## Core Mission\nTransform visual information about the PRIMARY SUBJECT ONLY into a structured YAML format that provides enough detail for AI systems to recreate the subject with high fidelity in any new environment. Focus exclusively on the subject's intrinsic characteristics.\n\n## Analysis Methodology\n### Step 1: Subject Identification\n* Determine if the primary subject is a **Person**, a **Product**, or a **Location** (Building/Environment).\n* If a Person or Product, isolate it from its surroundings.\n* If a **Location**, the immediate surroundings (building, parking lot, signage) *are* the subject. Ignore distant, irrelevant background elements (e.g., mountains far away, unrelated city street).\n\n### Step 2: Systematic Subject Scanning\nUse this focused approach:\n1.  **Overall subject form**: Shape, scale, and layout of the main subject.\n2.  **Surface characteristics**: Materials, textures, and colors of the subject itself.\n3.  **Structural details**: Components, features, and construction.\n4.  **Fine details**: Intrinsic textures, patterns, and markings.\n5.  **Subject-specific attributes**: Unique characteristics that define this particular subject.\n\n### Step 3: YAML Structure Generation\nBased on the identified subject type, use the appropriate template structure with exhaustive detail in each field.\n\n## YAML Output Templates\n*(Use the one that best fits the image's primary subject)*\n\n### For People\n```yaml\nsubject_metadata:\n  subject_type: \"Person\"\n  analysis_focus: \"Subject-only, background ignored\"\n  viewing_angle: \"How we're seeing the person (front, profile, 3/4 view)\"\n\nperson:\n  demographic_appearance:\n    apparent_age_range: \"Specific age estimation with reasoning\"\n    gender_presentation: \"How they present themselves visually\"\n  # ... (rest of the detailed 'person' template) ...\n  facial_analysis:\n    overall_facial_structure:\n      face_shape: \"Oval, round, square, heart, diamond, oblong\"\n    # ... etc ...\n  hair_analysis:\n    # ... etc ...\n  body_and_posture:\n    # ... etc ...\n  clothing_analysis:\n    # ... etc ...\n  expression_and_demeanor:\n    # ... etc ...\nFor Products\nYAML\n\nsubject_metadata:\n  subject_type: \"Product\"\n  analysis_focus: \"Subject-only, background ignored\"\n  lighting_note: \"How light affects subject appearance only\"\n\nproduct:\n  identification:\n    category: \"Specific product type (e.g., Car, Phone)\"\n    subcategory: \"More specific classification (e.g., Mid-size Sedan)\"\n  # ... (rest of the detailed 'product' template) ...\n  physical_structure:\n    overall_shape: \"Geometric description with proportions\"\n    # ... etc ...\n  materials_and_surfaces:\n    # ... etc ...\n  color_analysis:\n    # ... etc ...\n  distinctive_details:\n    # ... etc ...\nFor Locations (Buildings/Environments)\nYAML\n\nsubject_metadata:\n  subject_type: \"Location\"\n  analysis_focus: \"Primary building and immediate property\"\n  viewing_angle: \"Perspective of the viewer (e.g., ground-level, eye-level, from parking lot)\"\n  time_of_day: \"e.g., Midday, Golden Hour, Night\"\n  weather_conditions: \"e.g., Clear blue sky, Overcast, Rainy\"\n\nlocation:\n  identification:\n    location_type: \"e.g., Car Dealership, Office Building, Retail Store\"\n    fictional_name: \"Name of the business, if visible on signage\"\n    overall_style: \"e.g., Modern, Contemporary, Traditional, Brutalist\"\n\n  architectural_features:\n    main_structure:\n      shape: \"Overall geometric form (e.g., Rectangular, L-shaped)\"\n      size_scale: \"e.g., Large, single-story, expansive\"\n      materials: \"Primary construction materials (e.g., Glass, steel, concrete, brick)\"\n      color_palette: \"Dominant and accent colors of the building\"\n    \n    facade_details:\n      windows: \"Type, size, and placement (e.g., Floor-to-ceiling glass, small rectangular)\"\n      entrance: \"Description of main doors (e.g., Double glass sliding doors, grand entryway)\"\n      roof_style: \"e.g., Flat roof, sloped, architectural\"\n    \n    interior_glimpse:\n      visibility: \"Is the interior visible from outside?\"\n      visible_elements: \"e.g., Brightly lit showroom, cars visible inside, reception desk\"\n\n  branding_and_signage:\n    primary_logo:\n      description: \"Visual description of the main logo\"\n      placement: \"e.g., Mounted on facade, on a pylon sign\"\n      text: \"Any text visible on the logo\"\n    \n    other_signage:\n      directional_signs: \"e.g., 'Enter', 'Service', 'Parking'\"\n      promotional_banners: \"e.g., 'Summer Sale Event'\"\n      brand_logos: \"e.g., Honda, Ford, Toyota logos visible\"\n\n  immediate_environment:\n    ground_surface:\n      type: \"e.g., Asphalt parking lot, concrete walkways\"\n      condition: \"e.g., Clean, new, cracked, marked with lines\"\n    \n    landscaping:\n      elements: \"e.g., Manicured bushes, grass strips, trees, decorative rocks\"\n      condition: \"e.g., Well-maintained, sparse\"\n    \n    fixtures:\n      lighting: \"e.g., Tall parking lot lamps, wall-mounted lights\"\n      other: \"e.g., Flagpoles, benches, barriers\"\n    \n    vehicles_present:\n      description: \"Are cars part of the scene? (e.g., Cars parked in rows, feature vehicle at entrance)\"\n      state: \"e.g., New, clean, for sale\"\n\n  lighting_and_atmosphere:\n    light_source: \"e.g., Bright, direct overhead sunlight\"\n    shadows: \"Description of shadows (e.g., Hard, sharp shadows, indicating midday)\"\n    overall_feel: \"e.g., Bright, professional, clean, welcoming, empty, busy\"\nAnalysis Instructions\nSubject-Focus Protocol\nIdentify Subject Type: First, determine if the image is primarily of a Person, a Product, or a Location.\n\nSelect Template: Choose the corresponding YAML template.\n\nExecute Analysis:\n\nFor Person/Product: Isolate the subject. Ignore all background elements.\n\nFor Location: Treat the building and its immediate property (parking lot, signage) as the subject. Ignore distant, irrelevant background elements (e.g., faraway hills, other buildings).\n\nBe Exhaustive: Fill every applicable field with detailed, factual observations.\n\nOutput: Provide only the completed YAML structure.",
+        "imageUrls": "={{ $json.Car_Dealership_URL }}",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.googleGemini",
+      "typeVersion": 1,
+      "position": [
+        544,
+        336
+      ],
+      "id": "8d958e5f-3a8f-4f01-9cbb-4c015f099f9d",
+      "name": "Analyze dealership photo",
+      "retryOnFail": true,
+      "credentials": {
+        "googlePalmApi": {
+          "id": "JZ464KgCUqqY9UZt",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "image",
+        "operation": "analyze",
+        "modelId": {
+          "__rl": true,
+          "value": "models/gemini-2.5-pro",
+          "mode": "list",
+          "cachedResultName": "models/gemini-2.5-pro"
+        },
+        "text": "=## Role and Objective\nYou are an expert visual analyst specializing in creating comprehensive, structured descriptions of the PRIMARY SUBJECT in images. Your task is to examine uploaded images and produce exhaustively detailed YAML descriptions that capture every observable characteristic of the main subject (person, product, or location), IGNORING background or environmental elements *unless* the environment itself is the subject.\n\n## Core Mission\nTransform visual information about the PRIMARY SUBJECT ONLY into a structured YAML format that provides enough detail for AI systems to recreate the subject with high fidelity in any new environment. Focus exclusively on the subject's intrinsic characteristics.\n\n## Analysis Methodology\n### Step 1: Subject Identification\n* Determine if the primary subject is a **Person**, a **Product**, or a **Location** (Building/Environment).\n* If a Person or Product, isolate it from its surroundings.\n* If a **Location**, the immediate surroundings (building, parking lot, signage) *are* the subject. Ignore distant, irrelevant background elements (e.g., mountains far away, unrelated city street).\n\n### Step 2: Systematic Subject Scanning\nUse this focused approach:\n1.  **Overall subject form**: Shape, scale, and layout of the main subject.\n2.  **Surface characteristics**: Materials, textures, and colors of the subject itself.\n3.  **Structural details**: Components, features, and construction.\n4.  **Fine details**: Intrinsic textures, patterns, and markings.\n5.  **Subject-specific attributes**: Unique characteristics that define this particular subject.\n\n### Step 3: YAML Structure Generation\nBased on the identified subject type, use the appropriate template structure with exhaustive detail in each field.\n\n## YAML Output Templates\n*(Use the one that best fits the image's primary subject)*\n\n### For People\n```yaml\nsubject_metadata:\n  subject_type: \"Person\"\n  analysis_focus: \"Subject-only, background ignored\"\n  viewing_angle: \"How we're seeing the person (front, profile, 3/4 view)\"\n\nperson:\n  demographic_appearance:\n    apparent_age_range: \"Specific age estimation with reasoning\"\n    gender_presentation: \"How they present themselves visually\"\n  # ... (rest of the detailed 'person' template) ...\n  facial_analysis:\n    overall_facial_structure:\n      face_shape: \"Oval, round, square, heart, diamond, oblong\"\n    # ... etc ...\n  hair_analysis:\n    # ... etc ...\n  body_and_posture:\n    # ... etc ...\n  clothing_analysis:\n    # ... etc ...\n  expression_and_demeanor:\n    # ... etc ...\nFor Products\nYAML\n\nsubject_metadata:\n  subject_type: \"Product\"\n  analysis_focus: \"Subject-only, background ignored\"\n  lighting_note: \"How light affects subject appearance only\"\n\nproduct:\n  identification:\n    category: \"Specific product type (e.g., Car, Phone)\"\n    subcategory: \"More specific classification (e.g., Mid-size Sedan)\"\n  # ... (rest of the detailed 'product' template) ...\n  physical_structure:\n    overall_shape: \"Geometric description with proportions\"\n    # ... etc ...\n  materials_and_surfaces:\n    # ... etc ...\n  color_analysis:\n    # ... etc ...\n  distinctive_details:\n    # ... etc ...\nFor Locations (Buildings/Environments)\nYAML\n\nsubject_metadata:\n  subject_type: \"Location\"\n  analysis_focus: \"Primary building and immediate property\"\n  viewing_angle: \"Perspective of the viewer (e.g., ground-level, eye-level, from parking lot)\"\n  time_of_day: \"e.g., Midday, Golden Hour, Night\"\n  weather_conditions: \"e.g., Clear blue sky, Overcast, Rainy\"\n\nlocation:\n  identification:\n    location_type: \"e.g., Car Dealership, Office Building, Retail Store\"\n    fictional_name: \"Name of the business, if visible on signage\"\n    overall_style: \"e.g., Modern, Contemporary, Traditional, Brutalist\"\n\n  architectural_features:\n    main_structure:\n      shape: \"Overall geometric form (e.g., Rectangular, L-shaped)\"\n      size_scale: \"e.g., Large, single-story, expansive\"\n      materials: \"Primary construction materials (e.g., Glass, steel, concrete, brick)\"\n      color_palette: \"Dominant and accent colors of the building\"\n    \n    facade_details:\n      windows: \"Type, size, and placement (e.g., Floor-to-ceiling glass, small rectangular)\"\n      entrance: \"Description of main doors (e.g., Double glass sliding doors, grand entryway)\"\n      roof_style: \"e.g., Flat roof, sloped, architectural\"\n    \n    interior_glimpse:\n      visibility: \"Is the interior visible from outside?\"\n      visible_elements: \"e.g., Brightly lit showroom, cars visible inside, reception desk\"\n\n  branding_and_signage:\n    primary_logo:\n      description: \"Visual description of the main logo\"\n      placement: \"e.g., Mounted on facade, on a pylon sign\"\n      text: \"Any text visible on the logo\"\n    \n    other_signage:\n      directional_signs: \"e.g., 'Enter', 'Service', 'Parking'\"\n      promotional_banners: \"e.g., 'Summer Sale Event'\"\n      brand_logos: \"e.g., Honda, Ford, Toyota logos visible\"\n\n  immediate_environment:\n    ground_surface:\n      type: \"e.g., Asphalt parking lot, concrete walkways\"\n      condition: \"e.g., Clean, new, cracked, marked with lines\"\n    \n    landscaping:\n      elements: \"e.g., Manicured bushes, grass strips, trees, decorative rocks\"\n      condition: \"e.g., Well-maintained, sparse\"\n    \n    fixtures:\n      lighting: \"e.g., Tall parking lot lamps, wall-mounted lights\"\n      other: \"e.g., Flagpoles, benches, barriers\"\n    \n    vehicles_present:\n      description: \"Are cars part of the scene? (e.g., Cars parked in rows, feature vehicle at entrance)\"\n      state: \"e.g., New, clean, for sale\"\n\n  lighting_and_atmosphere:\n    light_source: \"e.g., Bright, direct overhead sunlight\"\n    shadows: \"Description of shadows (e.g., Hard, sharp shadows, indicating midday)\"\n    overall_feel: \"e.g., Bright, professional, clean, welcoming, empty, busy\"\nAnalysis Instructions\nSubject-Focus Protocol\nIdentify Subject Type: First, determine if the image is primarily of a Person, a Product, or a Location.\n\nSelect Template: Choose the corresponding YAML template.\n\nExecute Analysis:\n\nFor Person/Product: Isolate the subject. Ignore all background elements.\n\nFor Location: Treat the building and its immediate property (parking lot, signage) as the subject. Ignore distant, irrelevant background elements (e.g., faraway hills, other buildings).\n\nBe Exhaustive: Fill every applicable field with detailed, factual observations.\n\nOutput: Provide only the completed YAML structure.",
+        "imageUrls": "={{ $json.Character_URL }}",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.googleGemini",
+      "typeVersion": 1,
+      "position": [
+        544,
+        560
+      ],
+      "id": "5ed2d975-5123-48ee-a26a-14b6b4c7adaa",
+      "name": "Analyze character photo",
+      "retryOnFail": true,
+      "credentials": {
+        "googlePalmApi": {
+          "id": "JZ464KgCUqqY9UZt",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "numberInputs": 5
+      },
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [
+        896,
+        96
+      ],
+      "id": "7a00486f-83de-4e55-942e-071163cff665",
+      "name": "Merge"
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "documentId": {
+          "__rl": true,
+          "value": "1NNRQbxtyQvL3UdZuyLPZ0kwQyhWo3XYkOSUrTz1ewm4",
+          "mode": "list",
+          "cachedResultName": "Car Dealership Promo Video",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1NNRQbxtyQvL3UdZuyLPZ0kwQyhWo3XYkOSUrTz1ewm4/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1NNRQbxtyQvL3UdZuyLPZ0kwQyhWo3XYkOSUrTz1ewm4/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Vehicle_ID": "={{ $('Read Database').item.json.Vehicle_ID }}",
+            "Scene_1_Angle_Description": "={{ $json.text[0] }}",
+            "Scene_2_Angle_Description": "={{ $json.text[1] }}",
+            "Car_Dealership_Description": "={{ $json.text[3] }}",
+            "Character_Description": "={{ $json.text[4] }}",
+            "Scene_3_Angle_Description": "={{ $json.text[2] }}"
+          },
+          "matchingColumns": [
+            "Vehicle_ID"
+          ],
+          "schema": [
+            {
+              "id": "Vehicle_ID",
+              "displayName": "Vehicle_ID",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Make",
+              "displayName": "Make",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Model",
+              "displayName": "Model",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Scene_1_Prompt",
+              "displayName": "Scene_1_Prompt",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Scene_1_Angle_URL",
+              "displayName": "Scene_1_Angle_URL",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Scene_1_Angle_Description",
+              "displayName": "Scene_1_Angle_Description",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Scene_2_Prompt",
+              "displayName": "Scene_2_Prompt",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Scene_2_Angle_URL",
+              "displayName": "Scene_2_Angle_URL",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Scene_2_Angle_Description",
+              "displayName": "Scene_2_Angle_Description",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Scene_3_Prompt",
+              "displayName": "Scene_3_Prompt",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Scene_3_Angle_URL",
+              "displayName": "Scene_3_Angle_URL",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Scene_3_Angle_Description",
+              "displayName": "Scene_3_Angle_Description",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Car_Dealership_URL",
+              "displayName": "Car_Dealership_URL",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Car_Dealership_Description",
+              "displayName": "Car_Dealership_Description",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Character_URL",
+              "displayName": "Character_URL",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Character_Description",
+              "displayName": "Character_Description",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Status",
+              "displayName": "Status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Final_Video_URL",
+              "displayName": "Final_Video_URL",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "row_number",
+              "displayName": "row_number",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "readOnly": true,
+              "removed": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        1280,
+        144
+      ],
+      "id": "0c15f482-3a29-49b3-8797-5e94878d6447",
+      "name": "Update database with descriptions",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "IB4bnQ037MQjLvzB",
+          "name": "Ecommojo-Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "workflowId": {
+          "__rl": true,
+          "value": "O40XQxkBF4EYgeS0",
+          "mode": "list",
+          "cachedResultUrl": "/workflow/O40XQxkBF4EYgeS0",
+          "cachedResultName": "Kie.ai VEO3.1 fast image to video subworkflow"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "aspect_ratio": "16:9",
+            "generationType": "REFERENCE_2_VIDEO",
+            "video_prompt": "={{ $json.prompt }}",
+            "imageUrls": "={{ $json.config.reference_images }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "video_prompt",
+              "displayName": "video_prompt",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            },
+            {
+              "id": "aspect_ratio",
+              "displayName": "aspect_ratio",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            },
+            {
+              "id": "imageUrls",
+              "displayName": "imageUrls",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "array",
+              "removed": false
+            },
+            {
+              "id": "generationType",
+              "displayName": "generationType",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": true
+        },
+        "mode": "each",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.executeWorkflow",
+      "typeVersion": 1.3,
+      "position": [
+        2064,
+        144
+      ],
+      "id": "e8e587fe-0e88-4982-b527-ff9c90688539",
+      "name": "Call 'Kie.ai VEO3.1 fast image to video subworkflow'",
+      "retryOnFail": true
+    },
+    {
+      "parameters": {
+        "jsonSchemaExample": "{\n  \"scene_1_request\": {\n    \"model\": \"veo-3.1-generate-preview\",\n    \"prompt\": \"A professional salesperson, a brunette woman in a sapphire blue blazer, stands at a modern car dealership with floor-to-ceiling glass windows. She is next to a silver 2024 Honda CR-V EX-L. She smiles warmly, with a confident and engaging mood, and says: 'Hi everyone and welcome to Prestige Motors! I'm Elena, and I am so excited to show you this absolutely stunning 2024 Honda CR-V EX-L!'\",\n    \"config\": {\n      \"duration_seconds\": \"8\",\n      \"aspect_ratio\": \"16:9\",\n      \"reference_images\": [\n        \"https://.../elena.jpg\",\n        \"https://.../dealership.jpg\",\n        \"https://.../crv-front.jpg\"\n      ]\n    }\n  },\n  \"scene_2_request\": {\n    \"model\": \"veo-3.1-generate-preview\",\n    \"prompt\": \"An interior shot shows the same salesperson, Elena, in the driver's seat of the CR-V, with the modern dealership visible through the window. She gestures enthusiastically to the car's interior dashboard. In an approachable and clear voice, she says: 'Just look at this incredible interior. You get these premium Heated Leather Seats and this beautiful 9-inch Touchscreen with wireless Apple CarPlay!'\",\n    \"config\": {\n      \"duration_seconds\": \"8\",\n      \"aspect_ratio\": \"16:9\",\n      \"reference_images\": [\n        \"https://.../elena.jpg\",\n        \"https://.../dealership.jpg\",\n        \"https://.../crv-dash.jpg\"\n      ]\n    }\n  },\n  \"scene_3_request\": {\n    \"model\": \"veo-3.1-generate-preview\",\n    \"prompt\": \"The salesperson, Elena, stands at the modern dealership building near the rear of the silver SUV. She looks confidently at the camera and says with a warm, persuasive smile: 'And for total peace of mind, it comes with the full Honda Sensing Safety Suite. At just $32,500, this is the one you've been waiting for. Come visit me today!'\",\n    \"config\": {\n      \"duration_seconds\": \"8\",\n      \"aspect_ratio\": \"16:9\",\n      \"reference_images\": [\n        \"https://.../elena.jpg\",\n        \"https://.../dealership.jpg\",\n        \"https://.../crv-rear.jpg\"\n      ]\n    }\n  }\n}",
+        "autoFix": true
+      },
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1.3,
+      "position": [
+        1664,
+        352
+      ],
+      "id": "aee23adf-66fa-40dc-809d-235e7d76894a",
+      "name": "Structured Output Parser"
+    },
+    {
+      "parameters": {
+        "model": "openai/gpt-4.1",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenRouter",
+      "typeVersion": 1,
+      "position": [
+        1328,
+        480
+      ],
+      "id": "965d851a-ae56-454a-8d2b-357e2df7632c",
+      "name": "OpenRouter Chat Model",
+      "credentials": {
+        "openRouterApi": {
+          "id": "OKXl16r8Jnur9uD1",
+          "name": "OpenRouter account 1"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Make : {{ $('Read Database').item.json.Make }}\nModel: {{ $('Read Database').item.json.Model }}\nScene_1_Angle_Description: {{ $json.Scene_1_Angle_Description }}\nScene_1_Angle_URL: {{ $('Read Database').item.json.Scene_1_Angle_URL }}\nScene_2_Angle_Description: {{ $json.Scene_2_Angle_Description }}\nScene_2_Angle_URL: {{ $('Read Database').item.json.Scene_2_Angle_URL }}\nScene_3_Angle_Description: {{ $json.Scene_3_Angle_Description }}\nScene_3_Angle_URL: {{ $('Read Database').item.json.Scene_3_Angle_URL }}\nCar_Dealership_Description: {{ $json.Car_Dealership_Description }}\nCar_Dealership_URL: {{ $('Read Database').item.json.Car_Dealership_URL }}\nCharacter_Description: {{ $json.Character_Description }}\nCharacter_URL: {{ $('Read Database').item.json.Character_URL }}",
+        "hasOutputParser": true,
+        "options": {
+          "systemMessage": "=## Role and Objective\n\nYou are an expert **\"Veo Creative Director and Scriptwriter.\"** Your task is to consume structured data, including vehicle details, scene goals, and detailed YAML descriptions of visual assets. You will generate the dialogue (script) for the salesperson, \"Elena,\" based on her persona and the scene's goal. You will then merge this generated script with the YAML descriptions to create a single, highly-descriptive prompt string for each of the 3 scenes, ready for the Veo 3.1 API.\n\n**IMPORTANT GENERATION CONSTRAINT:**\nWhen generating the dialogue (script) for Elena, you must ensure the total word count for the entire script in each scene is **a maximum of 18 words**. This ensures the dialogue fits naturally within the 8-second video duration without rushing or being cut off by the API.\n\n---\n\n## Character Profile (Pre-loaded)\n\n**Name:** Elena\n\n**Persona:** Confident, warm, engaging, enthusiastic, professional, and knowledgeable.\n\n## Input from User (or n8n)\n\nThe agent receives a single JSON object. Notice the `scene_script` fields are now `scene_goal`.\n\n```json\n{\n  \"vehicle_make\": \"Honda\",\n  \"vehicle_model\": \"CR-V EX-L\",\n  \"vehicle_color\": \"Lunar Silver Metallic\",\n  \"vehicle_year\": \"2024\",\n  \"talking_points\": [\n    \"Heated Leather Seats\",\n    \"9-inch Touchscreen with Wireless Apple CarPlay\",\n    \"Honda Sensing Safety Suite\",\n    \"Great value at $32,500\"\n  ],\n  \n  \"scene_1_goal\": \"Introduction: Greet the customer and introduce the car's exterior.\",\n  \"scene_2_goal\": \"Feature Focus: Showcase the interior, focusing on the leather and touchscreen.\",\n  \"scene_3_goal\": \"Closing: Highlight a key safety feature and give a strong call to action.\",\n  \n  \"character_image_url\": \"https://.../elena.jpg\",\n  \"character_yaml\": \"...\", \n  \n  \"dealership_image_url\": \"https://.../dealership.jpg\",\n  \"dealership_yaml\": \"...\",\n\n  \"scene_1_car_angle_url\": \"https://.../crv-front.jpg\",\n  \"scene_1_car_angle_yaml\": \"...\",\n  \n  \"scene_2_car_angle_url\": \"https://.../crv-dash.jpg\",\n  \"scene_2_car_angle_yaml\": \"...\",\n  \n  \"scene_3_car_angle_url\": \"https://.../crv-rear.jpg\",\n  \"scene_3_car_angle_yaml\": \"...\"\n}\n```\n\n---\n\n## Prompt Generation Logic (Internal to the Agent)\n\nThe agent will parse the YAML strings and the `scene_goal` to dynamically build the prompt and script.\n\n### Example for Scene 1\n\n1. **Parse `scene_1_goal`:** \"Introduction: Greet the customer and introduce the car's exterior.\"\n2. **Parse `talking_points`:** (Selects relevant points for an intro).\n3. **Parse `character_yaml`:** `person.clothing...color_and_pattern` → \"Sapphire blue blazer\"\n4. **Parse `dealership_yaml`:** `location.identification.overall_style` → \"Modern\"\n5. **Parse `scene_1_car_angle_yaml`:** `product.color_analysis...dominant_color` → \"Silver\"\n\n### Internal Scriptwriting\n\n**AI thinks:** \"My name is Elena. I'm warm and professional. My goal is to introduce this car. I'll start with a greeting and state the car's name.\"\n\n**AI generates script:** \n> \"Hi everyone and welcome to Prestige Motors! I'm Elena, and I am so excited to show you this absolutely stunning {vehicle_year} {vehicle_make} {vehicle_model}.\"\n\n### Combine & Construct Prompt\n\n> \"A professional salesperson, a brunette woman in a sapphire blue blazer, stands at a modern car dealership next to a silver SUV. She smiles warmly, with a confident and engaging mood, and says: 'Hi everyone and welcome to Prestige Motors! I'm Elena, and I am so excited to show you this absolutely stunning 2024 Honda CR-V EX-L!'\"\n\n---\n\n## Final JSON Output (from this AI Agent)\n\nThis is the final, API-ready payload. The prompt string now contains the AI-generated script seamlessly woven into the YAML-derived visual description.\n\n```json\n{\n  \"scene_1_request\": {\n    \"model\": \"veo-3.1-generate-preview\",\n    \"prompt\": \"A professional salesperson, a brunette woman in a sapphire blue blazer, stands at a modern car dealership with floor-to-ceiling glass windows. She is next to a silver 2024 Honda CR-V EX-L. She smiles warmly, with a confident and engaging mood, and says: 'Hi everyone and welcome to Prestige Motors! I'm Elena, and I am so excited to show you this absolutely stunning 2024 Honda CR-V EX-L!'\",\n    \"config\": {\n      \"duration_seconds\": \"8\",\n      \"aspect_ratio\": \"16:9\",\n      \"reference_images\": [\n        \"https://.../elena.jpg\",\n        \"https://.../dealership.jpg\",\n        \"https://.../crv-front.jpg\"\n      ]\n    }\n  },\n  \"scene_2_request\": {\n    \"model\": \"veo-3.1-generate-preview\",\n    \"prompt\": \"An interior shot shows the same salesperson, Elena, in the driver's seat of the CR-V, with the modern dealership visible through the window. She gestures enthusiastically to the car's interior dashboard. In an approachable and clear voice, she says: 'Just look at this incredible interior. You get these premium Heated Leather Seats and this beautiful 9-inch Touchscreen with wireless Apple CarPlay!'\",\n    \"config\": {\n      \"duration_seconds\": \"8\",\n      \"aspect_ratio\": \"16:9\",\n      \"reference_images\": [\n        \"https://.../elena.jpg\",\n        \"https://.../dealership.jpg\",\n        \"https://.../crv-dash.jpg\"\n      ]\n    }\n  },\n  \"scene_3_request\": {\n    \"model\": \"veo-3.1-generate-preview\",\n    \"prompt\": \"The salesperson, Elena, stands at the modern dealership building near the rear of the silver SUV. She looks confidently at the camera and says with a warm, persuasive smile: 'And for total peace of mind, it comes with the full Honda Sensing Safety Suite. At just $32,500, this is the one you've been waiting for. Come visit me today!'\",\n    \"config\": {\n      \"duration_seconds\": \"8\",\n      \"aspect_ratio\": \"16:9\",\n      \"reference_images\": [\n        \"https://.../elena.jpg\",\n        \"https://.../dealership.jpg\",\n        \"https://.../crv-rear.jpg\"\n      ]\n    }\n  }\n}\n```\n\n---\n"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.2,
+      "position": [
+        1488,
+        160
+      ],
+      "id": "bd42a2ed-486d-4da6-8ce5-21b7d8343eb3",
+      "name": "Veo Creative Director and Scriptwriter"
+    },
+    {
+      "parameters": {
+        "fieldToSplitOut": "output",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitOut",
+      "typeVersion": 1,
+      "position": [
+        1840,
+        144
+      ],
+      "id": "7bafe834-945c-4971-8ba6-4819114a15bc",
+      "name": "Split Out"
+    },
+    {
+      "parameters": {
+        "workflowId": {
+          "__rl": true,
+          "value": "fwK5R932JWKOZhf8",
+          "mode": "list",
+          "cachedResultUrl": "/workflow/fwK5R932JWKOZhf8",
+          "cachedResultName": "Fal.ai FFMPEG Merge Videos"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "videoUrls": "={{ $json.resultUrls }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "videoUrls",
+              "displayName": "videoUrls",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "array",
+              "removed": false
+            },
+            {
+              "id": "resolution",
+              "displayName": "resolution",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": true
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.executeWorkflow",
+      "typeVersion": 1.3,
+      "position": [
+        2464,
+        144
+      ],
+      "id": "fc188320-31bf-487f-84b8-4a09b832ffcb",
+      "name": "Call 'Fal.ai FFMPEG Merge Videos'"
+    },
+    {
+      "parameters": {
+        "url": "={{ $json.video.url }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        2672,
+        144
+      ],
+      "id": "557cead0-0fd0-448c-ae71-d2acc9d77d36",
+      "name": "Download final video"
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "documentId": {
+          "__rl": true,
+          "value": "1NNRQbxtyQvL3UdZuyLPZ0kwQyhWo3XYkOSUrTz1ewm4",
+          "mode": "list",
+          "cachedResultName": "Car Dealership Promo Video",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1NNRQbxtyQvL3UdZuyLPZ0kwQyhWo3XYkOSUrTz1ewm4/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1NNRQbxtyQvL3UdZuyLPZ0kwQyhWo3XYkOSUrTz1ewm4/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Vehicle_ID": "={{ $('Read Database').item.json.Vehicle_ID }}",
+            "Final_Video_URL": "={{ $json.webContentLink }}",
+            "Status": "Done"
+          },
+          "matchingColumns": [
+            "Vehicle_ID"
+          ],
+          "schema": [
+            {
+              "id": "Vehicle_ID",
+              "displayName": "Vehicle_ID",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Make",
+              "displayName": "Make",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Model",
+              "displayName": "Model",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Scene_1_Prompt",
+              "displayName": "Scene_1_Prompt",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Scene_1_Angle_URL",
+              "displayName": "Scene_1_Angle_URL",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Scene_1_Angle_Description",
+              "displayName": "Scene_1_Angle_Description",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Scene_2_Prompt",
+              "displayName": "Scene_2_Prompt",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Scene_2_Angle_URL",
+              "displayName": "Scene_2_Angle_URL",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Scene_2_Angle_Description",
+              "displayName": "Scene_2_Angle_Description",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Scene_3_Prompt",
+              "displayName": "Scene_3_Prompt",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Scene_3_Angle_URL",
+              "displayName": "Scene_3_Angle_URL",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Scene_3_Angle_Description",
+              "displayName": "Scene_3_Angle_Description",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Car_Dealership_URL",
+              "displayName": "Car_Dealership_URL",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Car_Dealership_Description",
+              "displayName": "Car_Dealership_Description",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Character_URL",
+              "displayName": "Character_URL",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Character_Description",
+              "displayName": "Character_Description",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Status",
+              "displayName": "Status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Final_Video_URL",
+              "displayName": "Final_Video_URL",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "row_number",
+              "displayName": "row_number",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "readOnly": true,
+              "removed": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        3088,
+        144
+      ],
+      "id": "7af42786-cc05-466f-b5ec-9da684547f9a",
+      "name": "Update final video url",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "IB4bnQ037MQjLvzB",
+          "name": "Ecommojo-Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "fieldsToAggregate": {
+          "fieldToAggregate": [
+            {
+              "fieldToAggregate": "resultUrls"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.aggregate",
+      "typeVersion": 1,
+      "position": [
+        2272,
+        144
+      ],
+      "id": "77afae2e-5919-4a21-b0ae-f73abe0bb076",
+      "name": "Aggregate reference image urls"
+    },
+    {
+      "parameters": {
+        "name": "={{ $('Read Database').item.json.Make + \"-\"+ $('Read Database').item.json.Vehicle_ID }}",
+        "driveId": {
+          "__rl": true,
+          "mode": "list",
+          "value": "My Drive"
+        },
+        "folderId": {
+          "__rl": true,
+          "value": "1jZvVn6npcF7D8FfroRv3nxnsYdrxiYcg",
+          "mode": "list",
+          "cachedResultName": "Car Promo Videos",
+          "cachedResultUrl": "https://drive.google.com/drive/folders/1jZvVn6npcF7D8FfroRv3nxnsYdrxiYcg"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        2880,
+        144
+      ],
+      "id": "cc4a774d-3a0a-47d2-b526-80b31ee44351",
+      "name": "Upload video to Drive",
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "a5mYn2gEB2FHtfwa",
+          "name": "Ecommojo-Google Drive account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "fieldsToAggregate": {
+          "fieldToAggregate": [
+            {
+              "fieldToAggregate": "content.parts[0].text"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.aggregate",
+      "typeVersion": 1,
+      "position": [
+        1088,
+        144
+      ],
+      "id": "189bc05e-1620-437e-9f6d-24842f88ee74",
+      "name": "Aggregate image descriptions"
+    },
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "triggerAtHour": 8
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        112,
+        144
+      ],
+      "id": "94c2577e-8005-48f6-a47a-4724708b9ad5",
+      "name": "Schedule Trigger"
+    },
+    {
+      "parameters": {
+        "content": "## Cost Breakdown\n\n1. Veo 3.1 - $0.9 per video (24 seconds long)\n2. Gemini 2.5 pro image analysis model - ~$0.004 per image.\n3. ffmpeg-api/merge-videos - $0.00017 per compute second\n4. GPT 4.1 (AI Agent) -  $0.0113 per run\n\n**Total = $0.93538**",
+        "height": 224,
+        "width": 496
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        3376,
+        -16
+      ],
+      "typeVersion": 1,
+      "id": "d2afbbe1-1530-489d-8431-be537ba7abce",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "formTitle": "Form",
+        "formDescription": "Upload these images",
+        "formFields": {
+          "values": [
+            {
+              "fieldLabel": "Upload scene 1 image",
+              "fieldType": "file",
+              "multipleFiles": false
+            },
+            {
+              "fieldLabel": "Upload scene 2 image",
+              "fieldType": "file",
+              "multipleFiles": false
+            },
+            {
+              "fieldLabel": "Upload scene 3 image",
+              "fieldType": "file",
+              "multipleFiles": false
+            },
+            {
+              "fieldLabel": "Upload dealership image",
+              "fieldType": "file",
+              "multipleFiles": false
+            },
+            {
+              "fieldLabel": "Upload character image",
+              "fieldType": "file",
+              "multipleFiles": false
+            },
+            {
+              "fieldLabel": "Vehicle_ID"
+            },
+            {
+              "fieldLabel": "Make"
+            },
+            {
+              "fieldLabel": "Model"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.formTrigger",
+      "typeVersion": 2.3,
+      "position": [
+        128,
+        -1216
+      ],
+      "id": "ebe4a562-db33-43ed-9518-8787ee084277",
+      "name": "On form submission",
+      "webhookId": "e3adb7d8-4713-4295-beb5-bdfcbbbb2620"
+    },
+    {
+      "parameters": {
+        "operation": "uploadFile",
+        "file": "Upload_scene_1_image",
+        "additionalFieldsFile": {}
+      },
+      "type": "n8n-nodes-cloudinary.cloudinary",
+      "typeVersion": 1,
+      "position": [
+        432,
+        -1632
+      ],
+      "id": "15ae4d09-4157-4035-9774-307595641921",
+      "name": "Upload_scene_1_image",
+      "credentials": {
+        "cloudinaryApi": {
+          "id": "PYhsOP21opiGS2o0",
+          "name": "Cloudinary account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "uploadFile",
+        "file": "Upload_scene_2_image",
+        "additionalFieldsFile": {}
+      },
+      "type": "n8n-nodes-cloudinary.cloudinary",
+      "typeVersion": 1,
+      "position": [
+        432,
+        -1424
+      ],
+      "id": "67f9e6c9-2746-458e-aaa2-48dd68832228",
+      "name": "Upload_scene_2_image",
+      "credentials": {
+        "cloudinaryApi": {
+          "id": "PYhsOP21opiGS2o0",
+          "name": "Cloudinary account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "uploadFile",
+        "file": "Upload_scene_3_image",
+        "additionalFieldsFile": {}
+      },
+      "type": "n8n-nodes-cloudinary.cloudinary",
+      "typeVersion": 1,
+      "position": [
+        432,
+        -1216
+      ],
+      "id": "1d148aff-9725-434f-9412-a948eaa1f4a0",
+      "name": "Upload_scene_3_image",
+      "credentials": {
+        "cloudinaryApi": {
+          "id": "PYhsOP21opiGS2o0",
+          "name": "Cloudinary account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "uploadFile",
+        "file": "Upload_dealership_image",
+        "additionalFieldsFile": {}
+      },
+      "type": "n8n-nodes-cloudinary.cloudinary",
+      "typeVersion": 1,
+      "position": [
+        432,
+        -992
+      ],
+      "id": "58f3701c-99c9-4bba-8b82-77336f2c77f1",
+      "name": "Upload_dealership_image",
+      "credentials": {
+        "cloudinaryApi": {
+          "id": "PYhsOP21opiGS2o0",
+          "name": "Cloudinary account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "uploadFile",
+        "file": "Upload_character_image",
+        "additionalFieldsFile": {}
+      },
+      "type": "n8n-nodes-cloudinary.cloudinary",
+      "typeVersion": 1,
+      "position": [
+        448,
+        -768
+      ],
+      "id": "d3b3b7d7-edd0-4c75-a078-6ac629c84af4",
+      "name": "Upload_character_image",
+      "credentials": {
+        "cloudinaryApi": {
+          "id": "PYhsOP21opiGS2o0",
+          "name": "Cloudinary account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "numberInputs": 5
+      },
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [
+        752,
+        -1264
+      ],
+      "id": "a875969c-815b-420e-84a4-be1207b5c595",
+      "name": "Merge1"
+    },
+    {
+      "parameters": {
+        "aggregate": "aggregateAllItemData",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.aggregate",
+      "typeVersion": 1,
+      "position": [
+        928,
+        -1216
+      ],
+      "id": "dac096a5-c5ac-4f0f-8706-e85e3c105411",
+      "name": "Aggregate image urls"
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "1NNRQbxtyQvL3UdZuyLPZ0kwQyhWo3XYkOSUrTz1ewm4",
+          "mode": "list",
+          "cachedResultName": "Car Dealership Promo Video",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1NNRQbxtyQvL3UdZuyLPZ0kwQyhWo3XYkOSUrTz1ewm4/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1NNRQbxtyQvL3UdZuyLPZ0kwQyhWo3XYkOSUrTz1ewm4/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Vehicle_ID": "={{ $('On form submission').item.json.Vehicle_ID }}",
+            "Make": "={{ $('On form submission').item.json.Make }}",
+            "Model": "={{ $('On form submission').item.json.Model }}",
+            "Status": "Pending",
+            "Character_URL": "={{ $('Upload_character_image').item.json.url }}",
+            "Car_Dealership_URL": "={{ $('Upload_dealership_image').item.json.url }}",
+            "Scene_3_Angle_URL": "={{ $('Upload_scene_3_image').item.json.url }}",
+            "Scene_2_Angle_URL": "={{ $('Upload_scene_2_image').item.json.url }}",
+            "Scene_1_Angle_URL": "={{ $('Upload_scene_1_image').item.json.url }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "Vehicle_ID",
+              "displayName": "Vehicle_ID",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Make",
+              "displayName": "Make",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Model",
+              "displayName": "Model",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Scene_1_Prompt",
+              "displayName": "Scene_1_Prompt",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Scene_1_Angle_URL",
+              "displayName": "Scene_1_Angle_URL",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Scene_1_Angle_Description",
+              "displayName": "Scene_1_Angle_Description",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Scene_2_Prompt",
+              "displayName": "Scene_2_Prompt",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Scene_2_Angle_URL",
+              "displayName": "Scene_2_Angle_URL",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Scene_2_Angle_Description",
+              "displayName": "Scene_2_Angle_Description",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Scene_3_Prompt",
+              "displayName": "Scene_3_Prompt",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Scene_3_Angle_URL",
+              "displayName": "Scene_3_Angle_URL",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Scene_3_Angle_Description",
+              "displayName": "Scene_3_Angle_Description",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Car_Dealership_URL",
+              "displayName": "Car_Dealership_URL",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Car_Dealership_Description",
+              "displayName": "Car_Dealership_Description",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Character_URL",
+              "displayName": "Character_URL",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Character_Description",
+              "displayName": "Character_Description",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Status",
+              "displayName": "Status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Final_Video_URL",
+              "displayName": "Final_Video_URL",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        1104,
+        -1216
+      ],
+      "id": "b1dac296-f967-4dd7-9478-2b03fe39b479",
+      "name": "Append row in database",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "IB4bnQ037MQjLvzB",
+          "name": "Ecommojo-Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [
+        1312,
+        -1216
+      ],
+      "id": "210e7108-fdc7-4c65-978f-ddced6d98d47",
+      "name": "No Operation, do nothing"
+    },
+    {
+      "parameters": {
+        "content": "# AI Vehicle Walkaround Video Generator (Veo 3.1 + n8n)\n**This template was created by Alex Safari.**\nSubscribe to my YouTube channel for more AI automation tutorials:\n👉 https://www.youtube.com/@alexsafari1\n\n📺 **Watch the Full Tutorial Video:**\nhttps://youtu.be/c5nlH_J9wUc\n\n## Overview\nThis workflow is the complete system behind the **AI Vehicle Walkaround Video Generator**. It transforms **5 simple photos** (3 of a car, 1 of a dealership, 1 of a salesperson) into a complete, 3-scene, 24-second video advertisement—for a total cost of **$0.93 per video**.\n\nIt uses an \"AI Salesperson\" agent to analyze all visual data, write a unique script, and generate a high-quality video with a **consistent character** using **Google Veo 3.1**.\n\n## Workflow Breakdown\n\n*This workflow is designed to be triggered in two ways:*\n1.  **Form Trigger:** A form to upload the 5 images and car details (Make, Model), which populates a Google Sheet with a \"Pending\" status.\n2.  **Schedule Trigger:** Runs daily, reads the Google Sheet, and processes the first \"Pending\" job it finds.\n\n### 1. Read Database\n- **Trigger:** Reads a Google Sheet (`Car Dealership Promo Video`) to find the first row with a \"Status\" of \"Pending\".\n- **Output:** Fetches all 5 image URLs and the vehicle metadata (Make, Model, ID).\n\n### 2. Parallel AI Vision (Gemini 2.5 Pro)\n- The workflow runs 5 separate **Gemini 2.5 Pro** vision nodes in parallel.\n- Each node analyzes one of the 5 reference images (Scene 1, Scene 2, Scene 3, Dealership, Character) using an advanced YAML prompt.\n- **Result:** Generates 5 exhaustive YAML descriptions detailing everything from car paint color to the salesperson's clothing and the dealership's architecture.\n\n### 3. Log Descriptions\n- The 5 YAML descriptions are aggregated and updated back to the Google Sheet. This provides a clear log of the AI's \"vision\" step.\n\n### 4. \"AI Salesperson\" Agent (GPT-4.1)\n- **Node:** `Veo Creative Director and Scriptwriter`\n- This is the \"brain\" of the operation. It receives all 5 YAML descriptions and the car's Make/Model.\n- **Action:** The GPT-4.1 agent writes a unique, persuasive 3-scene script (Intro, Features, CTA) designed for an 8-second clip.\n- **Output:** It structures all this data into a JSON object with 3 separate, highly-detailed prompts, one for each scene, ensuring a **consistent character in Veo 3 n8n**.\n\n### 5. Generate 3 Video Scenes (Google Veo 3.1)\n- The 3-scene JSON is split into 3 separate items.\n- Each item is passed to the `Kie.ai VEO3.1 fast image to video subworkflow`.\n- This is the core of the **Google Veo 3.1 image to video n8n** process, generating three 8-second video clips.\n\n### 6. Stitch Final Video (FFMPEG)\n- The 3 video URLs from Veo 3.1 are aggregated into a single array.\n- This array is sent to the `Fal.ai FFMPEG Merge Videos` subworkflow.\n- **Result:** A single, seamless 24-second **Veo 3 advertisement n8n** video.\n\n### 7. Upload & Finalize\n- **Download:** The final merged video is downloaded from the FFMPEG URL.\n- **Upload:** The video file is uploaded to Google Drive (\"Car Promo Videos\" folder).\n- **Update Database:** The final Google Drive link is saved to the original Google Sheet row, and the \"Status\" is updated to \"Done\".\n\n## ⚙️ Tech Stack\n- **n8n** – Workflow orchestration & automation logic\n- **Google Veo 3.1 (Kie.ai)** – Video generation engine\n- **Gemini 2.5 Pro (Google)** – AI vision & image analysis\n- **GPT-4.1 (OpenRouter)** – \"AI Salesperson\" agent (scripting & prompting)\n- **Google Sheets** – Database / Job queue\n- **Google Drive** – Final video storage\n- **Cloudinary** – (Used in Form) Image hosting\n- **Fal.ai FFMPEG** – Video merging\n\n## 💸 Cost Breakdown\n- **Veo 3.1:** $0.90 ($0.30 per 8-second scene x 3)\n- **Gemini 2.5 Pro:** ~$0.02 (for 5 image analyses)\n- **GPT-4.1 Agent:** ~$0.0113 per run\n- **FFMPEG:** ~$0.004 per video\n- **Total: ~$0.935 per video**\n\n---\n\n📧 **Email me directly**: contact@loopsera.com\n&nbsp;&nbsp;&nbsp;For quick questions, customisation requests, or workflow troubleshooting.\n\n🌐 **Visit my website**: [https://loopsera.com](https://loopsera.com)\n&nbsp;&S4;Explore more automation templates, services, and case studies.\n\n📞 **Book a Discovery Call**: [https://cal.com/loopsera/discoverycall](https://cal.com/loopsera/discoverycall)\n&nbsp;&nbsp;&nbsp;For businesses that need a custom AI agent built around their Instagram and ecommerce setup.\n\n🎓 **1-on-1 Coaching Session**: [https://cal.com/loopsera/n8n-ai-agent-coaching-session](https://cal.com/loopsera/n8n-ai-agent-coaching-session)\n&nbsp;&nbsp;&nbsp;Personalised coaching to help you build, troubleshoot, or optimise n8n AI workflows. Perfect for both beginners and advanced users.\n\n💬 **Join the AI Builder’s Boardroom (Skool Community)**: [https://www.skool.com/ai-builders-boardroom-1717](https://www.skool.com/ai-builders-boardroom-1717) — a professional community for builders creating AI agents that talk, listen, and sell, focused on deploying the digital workforce of the future.",
+        "height": 2048,
+        "width": 1536
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -1488,
+        -224
+      ],
+      "typeVersion": 1,
+      "id": "ced2ce34-82fd-4f9b-82a1-a3e1b796e638",
+      "name": "Sticky Note1"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Read Database": {
+      "main": [
+        [
+          {
+            "node": "Analyze an scene 1",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Analyze an scene 2",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Analyze an scene 3",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Analyze dealership photo",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Analyze character photo",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Analyze character photo": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 4
+          }
+        ]
+      ]
+    },
+    "Analyze an scene 1": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Analyze an scene 2": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Analyze an scene 3": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 2
+          }
+        ]
+      ]
+    },
+    "Analyze dealership photo": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 3
+          }
+        ]
+      ]
+    },
+    "Merge": {
+      "main": [
+        [
+          {
+            "node": "Aggregate image descriptions",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Update database with descriptions": {
+      "main": [
+        [
+          {
+            "node": "Veo Creative Director and Scriptwriter",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Structured Output Parser": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "Veo Creative Director and Scriptwriter",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenRouter Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Veo Creative Director and Scriptwriter",
+            "type": "ai_languageModel",
+            "index": 0
+          },
+          {
+            "node": "Structured Output Parser",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Veo Creative Director and Scriptwriter": {
+      "main": [
+        [
+          {
+            "node": "Split Out",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Split Out": {
+      "main": [
+        [
+          {
+            "node": "Call 'Kie.ai VEO3.1 fast image to video subworkflow'",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Call 'Kie.ai VEO3.1 fast image to video subworkflow'": {
+      "main": [
+        [
+          {
+            "node": "Aggregate reference image urls",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Call 'Fal.ai FFMPEG Merge Videos'": {
+      "main": [
+        [
+          {
+            "node": "Download final video",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Download final video": {
+      "main": [
+        [
+          {
+            "node": "Upload video to Drive",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Aggregate reference image urls": {
+      "main": [
+        [
+          {
+            "node": "Call 'Fal.ai FFMPEG Merge Videos'",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Upload video to Drive": {
+      "main": [
+        [
+          {
+            "node": "Update final video url",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Aggregate image descriptions": {
+      "main": [
+        [
+          {
+            "node": "Update database with descriptions",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "Read Database",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "On form submission": {
+      "main": [
+        [
+          {
+            "node": "Upload_scene_1_image",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Upload_scene_2_image",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Upload_scene_3_image",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Upload_dealership_image",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Upload_character_image",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Upload_scene_1_image": {
+      "main": [
+        [
+          {
+            "node": "Merge1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Upload_scene_2_image": {
+      "main": [
+        [
+          {
+            "node": "Merge1",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Upload_scene_3_image": {
+      "main": [
+        [
+          {
+            "node": "Merge1",
+            "type": "main",
+            "index": 2
+          }
+        ]
+      ]
+    },
+    "Upload_dealership_image": {
+      "main": [
+        [
+          {
+            "node": "Merge1",
+            "type": "main",
+            "index": 3
+          }
+        ]
+      ]
+    },
+    "Upload_character_image": {
+      "main": [
+        [
+          {
+            "node": "Merge1",
+            "type": "main",
+            "index": 4
+          }
+        ]
+      ]
+    },
+    "Merge1": {
+      "main": [
+        [
+          {
+            "node": "Aggregate image urls",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Aggregate image urls": {
+      "main": [
+        [
+          {
+            "node": "Append row in database",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Append row in database": {
+      "main": [
+        [
+          {
+            "node": "No Operation, do nothing",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "3a76c02a-b8b0-48e3-b187-261adcb6cba1",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "8e5aa95c0552a76b6f87328dfd800de4d3cc8f008434bf9076c4dfb3cb935d83"
+  },
+  "id": "N8kj17MhQnHuWXAt",
+  "tags": []
+}
