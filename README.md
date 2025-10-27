@@ -72,15 +72,15 @@ It uses an "AI Salesperson" agent to analyze all visual data, write a unique scr
 ---
 
 📧 **Email me directly**: contact@loopsera.com
-&nbsp;&nbsp;&nbsp;For quick questions, customisation requests, or workflow troubleshooting.
+For quick questions, customisation requests, or workflow troubleshooting.
 
 🌐 **Visit my website**: [https://loopsera.com](https://loopsera.com)
-&nbsp;&S4;Explore more automation templates, services, and case studies.
+Explore more automation templates, services, and case studies.
 
 📞 **Book a Discovery Call**: [https://cal.com/loopsera/discoverycall](https://cal.com/loopsera/discoverycall)
-&nbsp;&nbsp;&nbsp;For businesses that need a custom AI agent built around their Instagram and ecommerce setup.
+For businesses that need a custom AI agent built around their Instagram and ecommerce setup.
 
 🎓 **1-on-1 Coaching Session**: [https://cal.com/loopsera/n8n-ai-agent-coaching-session](https://cal.com/loopsera/n8n-ai-agent-coaching-session)
-&nbsp;&nbsp;&nbsp;Personalised coaching to help you build, troubleshoot, or optimise n8n AI workflows. Perfect for both beginners and advanced users.
+Personalised coaching to help you build, troubleshoot, or optimise n8n AI workflows. Perfect for both beginners and advanced users.
 
 💬 **Join the AI Builder’s Boardroom (Skool Community)**: [https://www.skool.com/ai-builders-boardroom-1717](https://www.skool.com/ai-builders-boardroom-1717) — a professional community for builders creating AI agents that talk, listen, and sell, focused on deploying the digital workforce of the future.
